@@ -35,7 +35,7 @@ import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
-public class FdActivity extends Activity implements CvCameraViewListener2 {
+public class EyeTrackerActivity extends Activity implements CvCameraViewListener2 {
 
 	private static final String TAG = "OCVSample::Activity";
 	private static final Scalar FACE_RECT_COLOR = new Scalar(0, 255, 0, 255);
@@ -162,7 +162,7 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
 		}
 	};
 
-	public FdActivity() {
+	public EyeTrackerActivity() {
 		mDetectorName = new String[2];
 		mDetectorName[JAVA_DETECTOR] = "Java";
 
