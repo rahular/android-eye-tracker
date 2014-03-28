@@ -1,7 +1,6 @@
 int attr camera_id 0x7f010001
 int attr show_fps 0x7f010000
 int drawable ic_launcher 0x7f020000
-int drawable icon 0x7f020001
 int id any 0x7f050000
 int id back 0x7f050001
 int id fd_activity_surface_view 0x7f050003
