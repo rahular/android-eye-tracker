@@ -37,7 +37,7 @@ import android.widget.TextView;
 
 public class EyeTrackerActivity extends Activity implements CvCameraViewListener2 {
 
-	private static final String TAG = "OCVSample::Activity";
+	private static final String TAG = "EyeTrackerActivity";
 	private static final Scalar FACE_RECT_COLOR = new Scalar(0, 255, 0, 255);
 	public static final int JAVA_DETECTOR = 0;
 	private static final int TM_SQDIFF = 0;
@@ -106,8 +106,6 @@ public class EyeTrackerActivity extends Activity implements CvCameraViewListener
 					is.close();
 					os.close();
 
-					// --------------------------------- load left eye
-					// classificator -----------------------------------
 					InputStream iser = getResources().openRawResource(
 							R.raw.haarcascade_lefteye_2splits);
 					File cascadeDirER = getDir("cascadeER",
@@ -277,8 +275,7 @@ public class EyeTrackerActivity extends Activity implements CvCameraViewListener
 		MatOfRect faces = new MatOfRect();
 
 		if (mJavaDetector != null)
-			mJavaDetector.detectMultiScale(mGray, faces, 1.1, 2, 2, // TODO:
-																	// objdetect.CV_HAAR_SCALE_IMAGE
+			mJavaDetector.detectMultiScale(mGray, faces, 1.1, 2, 2, 
 					new Size(mAbsoluteFaceSize, mAbsoluteFaceSize), new Size());
 
 		Rect[] facesArray = faces.toArray();
@@ -309,8 +306,7 @@ public class EyeTrackerActivity extends Activity implements CvCameraViewListener
 					+ (r.width - 2 * r.width / 16) / 2,
 					(int) (r.y + (r.height / 4.5)),
 					(r.width - 2 * r.width / 16) / 2, (int) (r.height / 3.0));
-			// draw the area - mGray is working grayscale mat, if you want to
-			// see area in rgb preview, change mGray to mRgba
+
 			Core.rectangle(mRgba, eyearea_left.tl(), eyearea_left.br(),
 					new Scalar(255, 0, 0, 255), 2);
 			Core.rectangle(mRgba, eyearea_right.tl(), eyearea_right.br(),
@@ -321,14 +317,11 @@ public class EyeTrackerActivity extends Activity implements CvCameraViewListener
 				teplateL = get_template(mJavaDetectorEye, eyearea_left, 24);
 				learn_frames++;
 			} else {
-				// Learning finished, use the new templates for template
-				// matching
 				match_eye(eyearea_right, teplateR, method);
 				match_eye(eyearea_left, teplateL, method);
 
 			}
 
-			// cut eye areas and put them to zoom windows
 			Imgproc.resize(mRgba.submat(eyearea_left), mZoomWindow2,
 					mZoomWindow2.size());
 			Imgproc.resize(mRgba.submat(eyearea_right), mZoomWindow,
@@ -394,7 +387,7 @@ public class EyeTrackerActivity extends Activity implements CvCameraViewListener
 		Mat mROI = mGray.submat(area);
 		int result_cols = mROI.cols() - mTemplate.cols() + 1;
 		int result_rows = mROI.rows() - mTemplate.rows() + 1;
-		// Check for bad template size
+
 		if (mTemplate.cols() == 0 || mTemplate.rows() == 0) {
 			return;
 		}
@@ -425,7 +418,6 @@ public class EyeTrackerActivity extends Activity implements CvCameraViewListener
 		}
 
 		Core.MinMaxLocResult mmres = Core.minMaxLoc(mResult);
-		// there is difference in matching methods - best match is max/min value
 		if (type == TM_SQDIFF || type == TM_SQDIFF_NORMED) {
 			matchLoc = mmres.minLoc;
 		} else {
